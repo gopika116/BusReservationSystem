@@ -7,8 +7,8 @@ class BusView {
     void showMenu() {
 
         System.out.println("\n--- Bus Reservation Menu ---");
-        System.out.println("1. Display Passengers");
-        System.out.println("2. Search Passenger");
+        System.out.println("1. Add Passenger");
+        System.out.println("2. Display Passengers");
         System.out.println("3. Book Ticket");
         System.out.println("4. Cancel Ticket");
         System.out.println("5. Exit");
@@ -17,30 +17,27 @@ class BusView {
     int getChoice() {
 
         System.out.print("Enter choice: ");
-        return sc.nextInt();
-    }
 
-    String getName(String msg) {
-
+        int choice = sc.nextInt();
         sc.nextLine();
-        System.out.print(msg);
+
+        return choice;
+    }
+
+    int getId() {
+
+        System.out.print("Enter ID: ");
+
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        return id;
+    }
+
+    String getName() {
+
+        System.out.print("Enter Name: ");
+
         return sc.nextLine();
-    }
-
-    void displayPassengers(Passenger[] passengers, int count) {
-
-        System.out.println("\nPassenger List:");
-
-        for (int i = 0; i < count; i++) {
-
-            System.out.println(
-                    passengers[i].id + " - " +
-                    passengers[i].name + " - " +
-                    (passengers[i].booked ? "Booked" : "Not Booked"));
-        }
-    }
-
-    void showMessage(String msg) {
-        System.out.println(msg);
     }
 }

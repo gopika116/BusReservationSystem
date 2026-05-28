@@ -2,55 +2,49 @@ public class Main {
 
     public static void main(String[] args) {
 
-        BusController controller = new BusController(10);
-        BusView view = new BusView();
+        BusController controller =
+                new BusController();
 
-        controller.addPassenger(1, "Gopi");
-        controller.addPassenger(2, "Ram");
-        controller.addPassenger(3, "Priya");
+        BusView view =
+                new BusView();
 
         while (true) {
 
             view.showMenu();
 
-            int choice = view.getChoice();
+            int choice =
+                    view.getChoice();
 
             switch (choice) {
 
                 case 1:
 
-                    view.displayPassengers(
-                            controller.getPassengers(),
-                            controller.getCount());
+                    int id = view.getId();
+                    String name = view.getName();
+
+                    controller.addPassenger(id, name);
 
                     break;
 
                 case 2:
 
-                    String search = view.getName("Enter passenger name: ");
-
-                    if (controller.findPassenger(search) != null)
-                        view.showMessage("Passenger Found");
-                    else
-                        view.showMessage("Passenger Not Found");
+                    controller.displayPassengers();
 
                     break;
 
                 case 3:
 
-                    String book = view.getName("Enter passenger name: ");
+                    String bookName = view.getName();
 
-                    view.showMessage(
-                            controller.bookTicket(book));
+                    controller.bookTicket(bookName);
 
                     break;
 
                 case 4:
 
-                    String cancel = view.getName("Enter passenger name: ");
+                    String cancelName = view.getName();
 
-                    view.showMessage(
-                            controller.cancelTicket(cancel));
+                    controller.cancelTicket(cancelName);
 
                     break;
 

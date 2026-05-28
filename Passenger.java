@@ -4,10 +4,10 @@ class Passenger {
     String name;
     boolean booked;
 
-    Passenger(int id, String name) {
+    Passenger(int id, String name, boolean booked) {
 
         this.id = id;
         this.name = name;
-        this.booked = false;
+        this.booked = booked;
     }
 }

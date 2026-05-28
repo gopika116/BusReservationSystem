@@ -1,68 +1,113 @@
+import java.sql.*;
+
 class BusController {
 
-    Passenger[] passengers;
-    int count;
+    Connection con;
 
-    BusController(int size) {
+    BusController() {
 
-        passengers = new Passenger[size];
-        count = 0;
+        con = DBConnection.getConnection();
     }
 
     void addPassenger(int id, String name) {
 
-        passengers[count++] = new Passenger(id, name);
+        try {
+
+            String query =
+                    "INSERT INTO passengers VALUES (?, ?, ?)";
+
+            PreparedStatement ps =
+                    con.prepareStatement(query);
+
+            ps.setInt(1, id);
+            ps.setString(2, name);
+            ps.setBoolean(3, false);
+
+            ps.executeUpdate();
+
+            System.out.println("Passenger Added");
+
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
     }
 
-    Passenger[] getPassengers() {
-        return passengers;
-    }
+    void displayPassengers() {
 
-    int getCount() {
-        return count;
-    }
+        try {
 
-    Passenger findPassenger(String name) {
+            String query = "SELECT * FROM passengers";
 
-        for (int i = 0; i < count; i++) {
+            Statement st = con.createStatement();
 
-            if (passengers[i].name.equalsIgnoreCase(name)) {
-                return passengers[i];
+            ResultSet rs = st.executeQuery(query);
+
+            System.out.println("\nPassenger List:");
+
+            while (rs.next()) {
+
+                System.out.println(
+                        rs.getInt("id") + " - " +
+                        rs.getString("name") + " - " +
+                        (rs.getBoolean("booked")
+                                ? "Booked"
+                                : "Not Booked"));
             }
-        }
 
-        return null;
+        } catch (Exception e) {
+
+            System.out.println(e);
+        }
     }
 
-    String bookTicket(String name) {
+    void bookTicket(String name) {
 
-        Passenger p = findPassenger(name);
+        try {
 
-        if (p == null)
-            return "Passenger Not Found";
+            String query =
+                    "UPDATE passengers SET booked = true WHERE name=?";
 
-        if (!p.booked) {
+            PreparedStatement ps =
+                    con.prepareStatement(query);
 
-            p.booked = true;
-            return "Ticket Booked Successfully";
+            ps.setString(1, name);
+
+            int rows = ps.executeUpdate();
+
+            if (rows > 0)
+                System.out.println("Ticket Booked Successfully");
+            else
+                System.out.println("Passenger Not Found");
+
+        } catch (Exception e) {
+
+            System.out.println(e);
         }
-
-        return "Ticket Already Booked";
     }
 
-    String cancelTicket(String name) {
+    void cancelTicket(String name) {
 
-        Passenger p = findPassenger(name);
+        try {
 
-        if (p == null)
-            return "Passenger Not Found";
+            String query =
+                    "UPDATE passengers SET booked = false WHERE name=?";
 
-        if (p.booked) {
+            PreparedStatement ps =
+                    con.prepareStatement(query);
 
-            p.booked = false;
-            return "Ticket Cancelled Successfully";
+            ps.setString(1, name);
+
+            int rows = ps.executeUpdate();
+
+            if (rows > 0)
+                System.out.println("Ticket Cancelled Successfully");
+            else
+                System.out.println("Passenger Not Found");
+
+        } catch (Exception e) {
+
+            System.out.println(e);
         }
-
-        return "Ticket Not Booked";
     }
 }
